@@ -6,10 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gin测试框架</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <script src="./utils/http.js"></script>
+
+    <script src="./api/demo.js"></script>
   </head>
   <body>
     <button onclick="test()">点我测试</button>
   </body>
 </html>
-<script></script>
+<script>
+  window.api.ping();
+</script>

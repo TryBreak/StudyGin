@@ -75,7 +75,7 @@ func main() {
 
 /*
 
-example
+file: example.go
 
 package main
 

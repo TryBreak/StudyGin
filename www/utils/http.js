@@ -1,7 +1,7 @@
 window.http = (function (params) {
   const axios = window.axios;
 
-  const axios_baseURL = '';
+  const axios_baseURL = 'http://localhost:8080/';
   if (origin.includes('localhost')) {
     // axios_baseURL = baseUrl;
   } else if (origin.includes('xxxx')) {
@@ -18,7 +18,7 @@ window.http = (function (params) {
     //请求拦截
     service.interceptors.request.use(
       (config) => {
-        console.info('请求开始');
+        // console.info('请求开始');
         return config;
       },
       (error) => {
@@ -30,8 +30,8 @@ window.http = (function (params) {
     //响应拦截
     service.interceptors.response.use(
       (response) => {
-        console.info('请求结束');
-        return res_dispose(response);
+        // console.info('请求结束');
+        return response;
       },
       (error) => {
         return Promise.reject(error);

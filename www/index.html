@@ -12,9 +12,45 @@
     <script src="./api/demo.js"></script>
   </head>
   <body>
-    <button onclick="test()">点我测试</button>
+    <button onclick="testMain()">测试 /</button>
+    <br />
+    <br />
+    <button onclick="testPing()">测试 /ping</button>
+    <br />
+    <br />
+    <button onclick="test_user_name()">测试 /user/:name</button>
+    <br />
+    <br />
+    <button onclick="testAdmin()">测试 /admin</button>
+    <br />
+    <br />
   </body>
 </html>
 <script>
-  window.api.ping();
+  function testMain(params) {
+    api.main().then((res) => {
+      console.log('res', res);
+    });
+  }
+  function testAdmin(params) {
+    api.admin().then((res) => {
+      console.log('res', res);
+    });
+  }
+
+  function testPing(params) {
+    api.ping().then((res) => {
+      console.log('res', res);
+    });
+  }
+
+  function test_user_name(params) {
+    api
+      .user_name({
+        name: '墨七',
+      })
+      .then((res) => {
+        console.log('res', res);
+      });
+  }
 </script>

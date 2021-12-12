@@ -1,36 +1,30 @@
 window.api = (function () {
   const main = (data) => {
-    http.ajax({
+    return http.ajax({
       url: '/',
-      data: {
-        abc: 123,
-      },
+      data,
       method: 'get',
     });
   };
 
   const admin = (data) => {
-    http.ajax({
+    return http.ajax({
       url: '/admin',
-      data: {
-        abc: 123,
-      },
+      data,
       method: 'post',
     });
   };
 
   const ping = (data) => {
-    http.ajax({
+    return http.ajax({
       url: '/ping',
-      data: {
-        abc: 123,
-      },
+      data,
       method: 'get',
     });
   };
 
   const user_name = (data) => {
-    http.ajax({
+    return http.ajax({
       url: `/user/${data.name}`,
       data,
       method: 'get',

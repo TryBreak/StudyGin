@@ -1,8 +1,9 @@
-{{ define "users/index.tmpl" }}
+{{ define "user/index.tmpl" }}
+
 <html>
-  <h1>
-    {{ .title }}
-  </h1>
-  <p>Using users/index.tmpl</p>
+  <h1>{{ .title }}</h1>
+  <h2>时间{{ .now | formatAsDate }}</h2>
+  <p>Using user/index.tmpl</p>
 </html>
+
 {{ end }}

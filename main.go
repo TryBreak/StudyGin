@@ -1,29 +1,46 @@
 package main
 
 import (
+	"fmt"
+	"html/template"
 	http "net/http"
+	"time"
 
 	gin "github.com/gin-gonic/gin"
 )
 
+func formatAsDate(t time.Time) string {
+	year, month, day := t.Date()
+	return fmt.Sprintf("%d-%02d-%02d", year, month, day)
+}
+
 func setupRouter() *gin.Engine {
 	r := gin.Default()
+
+	// 设置filter 方法
+	r.SetFuncMap(template.FuncMap{
+		"formatAsDate": formatAsDate,
+	})
+
+	// 设置模板路径
 	r.LoadHTMLGlob("templates/**/*")
 
-	r.GET("/index", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tmpl", gin.H{
+	r.GET("/", func(c *gin.Context) {
+		fmt.Println("mo77,index")
+		c.HTML(http.StatusOK, "index/index.tmpl", gin.H{
 			"title": "Main website",
 		})
 	})
 
-	r.GET("/posts/index", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "posts/index.tmpl", gin.H{
-			"title": "Posts",
+	r.GET("/post", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "post/index.tmpl", gin.H{
+			"title": "post",
 		})
 	})
-	r.GET("/users/index", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "users/index.tmpl", gin.H{
-			"title": "Users",
+	r.GET("/user", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "user/index.tmpl", gin.H{
+			"title": "user",
+			"now":   time.Now(),
 		})
 	})
 

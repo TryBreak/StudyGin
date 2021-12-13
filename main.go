@@ -6,62 +6,33 @@ import (
 	gin "github.com/gin-gonic/gin"
 )
 
-var db = make(map[string]string)
-
 func setupRouter() *gin.Engine {
-	// Disable Console Color
-	// gin.DisableConsoleColor()
 	r := gin.Default()
+	r.LoadHTMLGlob("templates/**/*")
 
-	// Ping test
-	r.GET("/ping", func(c *gin.Context) {
-		c.String(http.StatusOK, "pong")
+	r.GET("/index", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.tmpl", gin.H{
+			"title": "Main website",
+		})
 	})
 
-	// Get user value
-	r.GET("/user/:name", func(c *gin.Context) {
-		user := c.Params.ByName("name")
-		value, ok := db[user]
-		if ok {
-			c.JSON(http.StatusOK, gin.H{"user": user, "value": value})
-		} else {
-			c.JSON(http.StatusOK, gin.H{"user": user, "status": "no value"})
-		}
+	r.GET("/posts/index", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "posts/index.tmpl", gin.H{
+			"title": "Posts",
+		})
+	})
+	r.GET("/users/index", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "users/index.tmpl", gin.H{
+			"title": "Users",
+		})
 	})
 
-	// Authorized group (uses gin.BasicAuth() middleware)
-	// Same than:
-	// authorized := r.Group("/")
-	// authorized.Use(gin.BasicAuth(gin.Credentials{
-	//	  "foo":  "bar",
-	//	  "manu": "123",
-	//}))
-	authorized := r.Group("/", gin.BasicAuth(gin.Accounts{
-		"foo":  "bar", // user:foo password:bar
-		"manu": "123", // user:manu password:123
-	}))
-
-	/* example curl for /admin with basicauth header
-	   Zm9vOmJhcg== is base64("foo:bar")
-
-		curl -X POST \
-	  	http://localhost:8080/admin \
-	  	-H 'authorization: Basic Zm9vOmJhcg==' \
-	  	-H 'content-type: application/json' \
-	  	-d '{"value":"bar"}'
-	*/
-	authorized.POST("admin", func(c *gin.Context) {
-		user := c.MustGet(gin.AuthUserKey).(string)
-
-		// Parse JSON
-		var json struct {
-			Value string `json:"value" binding:"required"`
+	r.GET("/someJSON", func(c *gin.Context) {
+		data := map[string]interface{}{
+			"lang": "GO语言",
+			"tag":  "<br />",
 		}
-
-		if c.Bind(&json) == nil {
-			db[user] = json.Value
-			c.JSON(http.StatusOK, gin.H{"status": "ok"})
-		}
+		c.AsciiJSON(http.StatusOK, data)
 	})
 
 	return r
@@ -69,26 +40,6 @@ func setupRouter() *gin.Engine {
 
 func main() {
 	r := setupRouter()
-	// Listen and Server in 0.0.0.0:8080
-	r.Run(":8080")
+
+	r.Run(":9000")
 }
-
-/*
-
-file: example.go
-
-package main
-
-import "github.com/gin-gonic/gin"
-
-func main() {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
-}
-
-*/

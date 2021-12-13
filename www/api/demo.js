@@ -31,10 +31,19 @@ window.api = (function () {
     });
   };
 
+  const testSomeJSON = (data) => {
+    return http.ajax({
+      url: `/someJSON`,
+      data,
+      method: 'get',
+    });
+  };
+
   return {
     main,
     admin,
     ping,
     user_name,
+    testSomeJSON,
   };
 })();
